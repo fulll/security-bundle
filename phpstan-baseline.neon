@@ -201,11 +201,6 @@ parameters:
 			path: Security/Firewall/RequestSignatureListener.php
 
 		-
-			message: "#^Parameter \\#5 \\$signatureTime of class Rezzza\\\\SecurityBundle\\\\Security\\\\Firewall\\\\SignedRequest constructor expects int\\|null, mixed given\\.$#"
-			count: 1
-			path: Security/Firewall/RequestSignatureListener.php
-
-		-
 			message: "#^Property Rezzza\\\\SecurityBundle\\\\Security\\\\Firewall\\\\RequestSignatureListener\\:\\:\\$tokenStorage is never read, only written\\.$#"
 			count: 1
 			path: Security/Firewall/RequestSignatureListener.php
