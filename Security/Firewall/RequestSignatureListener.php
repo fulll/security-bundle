@@ -43,12 +43,14 @@ class RequestSignatureListener extends AbstractAuthenticator
             throw new UnauthorizedHttpException('Signature must be filled.');
         }
 
+        $signatureTtlParameter = $this->signatureQueryParameters->getTimeQueryParameter();
+
         $signedRequest = new SignedRequest(
             $request->server->get('REQUEST_METHOD'),
             $request->server->get('HTTP_HOST'),
             $request->getPathInfo(),
             rawurldecode($request->getContent()),
-            $request->get($this->signatureQueryParameters->getTimeQueryParameter()),
+            $request->query->has($signatureTtlParameter) ? $request->query->getInt($signatureTtlParameter) : null,
         );
 
         try {
