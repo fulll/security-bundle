@@ -17,7 +17,8 @@
     },
     "require-dev": {
         "atoum/atoum": "~4.0",
-        "phpstan/phpstan": "^1.9"
+        "phpstan/phpstan": "1.11.5",
+        "friendsofphp/php-cs-fixer": "v3.59.3"
     },
     "suggest": {
         "psr/http-message": "Required by \\Rezzza\\SecurityBundle\\Request\\Psr7RequestSigner"

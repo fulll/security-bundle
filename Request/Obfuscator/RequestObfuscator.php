@@ -16,9 +16,6 @@ class RequestObfuscator implements ObfuscatorInterface
     public const TOKEN_REPLACE = 'X';
     public const TOKEN_ALL = '*';
 
-    /**
-     * {@inheritdoc}
-     */
     public function obfuscate(array $data, array $obfuscatedPatterns)
     {
         foreach ($obfuscatedPatterns as $key => $pattern) {

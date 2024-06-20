@@ -18,9 +18,6 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class RezzzaSecurityBundle extends Bundle
 {
-    /**
-     * {@inheritdoc}
-     */
     public function build(ContainerBuilder $container): void
     {
         parent::build($container);

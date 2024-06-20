@@ -10,9 +10,6 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class ObfuscatorCompilerPass implements CompilerPassInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function process(ContainerBuilder $container): void
     {
         // request obfuscator is not enabled.

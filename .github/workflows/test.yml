@@ -5,29 +5,37 @@ jobs:
   php-cs-fixer:
     name: PHP Coding Standards Fixer
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
-
+      - name: Add HTTP basic auth credentials
+        run: echo '${{ secrets.COMPOSER_AUTH }}' > $GITHUB_WORKSPACE/auth.json
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.3
+      - name: Install dependencies
+        uses: php-actions/composer@v6
+        with:
+          php_version: 8.3
+          args: --no-scripts --dev
       - name: Php cs fixer
-        uses: fulll/actions/php-cs-fixer@master
+        run: bin/php-cs-fixer fix
 
   phpstan:
     name: PHPStan Static Analysis
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v3
       - name: Add HTTP basic auth credentials
         run: echo '${{ secrets.COMPOSER_AUTH }}' > $GITHUB_WORKSPACE/auth.json
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.3
       - name: Install dependencies
-        uses: php-actions/composer@v5
+        uses: php-actions/composer@v6
         with:
-          php_version: 8.0
-          args: --no-scripts
+          php_version: 8.3
+          args: --no-scripts --dev
       - name: PHPStan Static Analysis
-        uses: php-actions/phpstan@v3
-        with:
-          version: 1.9.4
-          memory_limit: 1G
-          php_version: 8.0
-          args: --error-format=github
+        run: bin/phpstan --memory-limit=1G
