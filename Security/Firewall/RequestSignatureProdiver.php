@@ -10,9 +10,6 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class RequestSignatureProdiver implements UserProviderInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function loadUserByUsername($username): UserInterface
     {
         throw new \LogicException(sprintf('Method %s should never be called.', __METHOD__));
@@ -33,9 +30,6 @@ class RequestSignatureProdiver implements UserProviderInterface
         return $user;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supportsClass($class): bool
     {
         return SignatureValidUser::class === $class;

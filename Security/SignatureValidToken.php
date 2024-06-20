@@ -13,9 +13,6 @@ class SignatureValidToken extends AbstractToken
         $this->setUser($user);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCredentials(): string
     {
         return '';

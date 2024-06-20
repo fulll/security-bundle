@@ -21,9 +21,6 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
  */
 class RezzzaSecurityExtension extends Extension
 {
-    /**
-     * {@inheritdoc}
-     */
     public function load(array $configs, ContainerBuilder $container): void
     {
         $processor = new Processor();

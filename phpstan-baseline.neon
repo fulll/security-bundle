@@ -6,11 +6,6 @@ parameters:
 			path: Controller/Annotations/ObfuscateRequest.php
 
 		-
-			message: "#^PHPDoc tag @param references unknown parameter\\: \\$data$#"
-			count: 1
-			path: Controller/Annotations/ObfuscateRequest.php
-
-		-
 			message: "#^Call to method getMethodAnnotation\\(\\) on an unknown class Doctrine\\\\Common\\\\Annotations\\\\Reader\\.$#"
 			count: 1
 			path: DataCollector/RequestDataCollector.php
@@ -52,11 +47,6 @@ parameters:
 
 		-
 			message: "#^Call to an undefined method Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\NodeDefinition\\:\\:children\\(\\)\\.$#"
-			count: 1
-			path: DependencyInjection/Security/Factory/RequestSignatureFactory.php
-
-		-
-			message: "#^Method Rezzza\\\\SecurityBundle\\\\DependencyInjection\\\\Security\\\\Factory\\\\RequestSignatureFactory\\:\\:createAuthenticator\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: DependencyInjection/Security/Factory/RequestSignatureFactory.php
 
@@ -204,6 +194,11 @@ parameters:
 			message: "#^Property Rezzza\\\\SecurityBundle\\\\Security\\\\Firewall\\\\RequestSignatureListener\\:\\:\\$tokenStorage is never read, only written\\.$#"
 			count: 1
 			path: Security/Firewall/RequestSignatureListener.php
+
+		-
+			message: "#^Class Rezzza\\\\SecurityBundle\\\\Security\\\\Firewall\\\\RequestSignatureProdiver implements generic interface Symfony\\\\Component\\\\Security\\\\Core\\\\User\\\\UserProviderInterface but does not specify its types\\: TUser$#"
+			count: 1
+			path: Security/Firewall/RequestSignatureProdiver.php
 
 		-
 			message: "#^Method Rezzza\\\\SecurityBundle\\\\Security\\\\Firewall\\\\RequestSignatureProdiver\\:\\:loadUserByUsername\\(\\) has parameter \\$username with no type specified\\.$#"
