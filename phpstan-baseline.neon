@@ -209,3 +209,8 @@ parameters:
 			message: "#^Method Rezzza\\\\SecurityBundle\\\\Security\\\\Firewall\\\\RequestSignatureProdiver\\:\\:supportsClass\\(\\) has parameter \\$class with no type specified\\.$#"
 			count: 1
 			path: Security/Firewall/RequestSignatureProdiver.php
+
+		-
+			message: "#^Method Rezzza\\\\SecurityBundle\\\\Security\\\\SignatureValidUser\\:\\:getUserIdentifier\\(\\) should return non\\-empty\\-string but returns ''\\.$#"
+			count: 1
+			path: Security/SignatureValidUser.php
