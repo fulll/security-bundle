@@ -1,25 +1,23 @@
 on: push
-name: test
+name: Static Analysis
 
 jobs:
-  php-cs-fixer:
+  phpcsfixer:
     name: PHP Coding Standards Fixer
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Add HTTP basic auth credentials
         run: echo '${{ secrets.COMPOSER_AUTH }}' > $GITHUB_WORKSPACE/auth.json
-      - name: Setup PHP
+      - name: Setup PHP environment
         uses: shivammathur/setup-php@v2
         with:
           php-version: 8.3
+          tools: composer
       - name: Install dependencies
-        uses: php-actions/composer@v6
-        with:
-          php_version: 8.3
-          args: --no-scripts --dev
-      - name: Php cs fixer
-        run: bin/php-cs-fixer fix
+        run: composer install --no-interaction --no-progress
+      - name: PHP Coding Standards Fixer
+        run: bin/php-cs-fixer fix --dry-run --diff
 
   phpstan:
     name: PHPStan Static Analysis
@@ -28,14 +26,12 @@ jobs:
       - uses: actions/checkout@v3
       - name: Add HTTP basic auth credentials
         run: echo '${{ secrets.COMPOSER_AUTH }}' > $GITHUB_WORKSPACE/auth.json
-      - name: Setup PHP
+      - name: Setup PHP environment
         uses: shivammathur/setup-php@v2
         with:
           php-version: 8.3
+          tools: composer
       - name: Install dependencies
-        uses: php-actions/composer@v6
-        with:
-          php_version: 8.3
-          args: --no-scripts --dev
+        run: composer install --no-interaction --no-progress
       - name: PHPStan Static Analysis
-        run: bin/phpstan --memory-limit=1G
+        run: bin/phpstan --memory-limit=1G --error-format=github
