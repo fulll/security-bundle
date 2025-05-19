@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Security\Listener;
+namespace Rezzza\SecurityBundle\Security\Listener;
 
 use Nelmio\CorsBundle\EventListener\CorsListener;
 use Psr\Log\LoggerInterface;
