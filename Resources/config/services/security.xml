@@ -12,7 +12,7 @@
     </parameters>
 
     <services>
-        <service id="fulll.cors_listener" class="Rezzza\SecurityBundle\Listener\CorsListener" public="false">
+        <service id="fulll.cors_listener" class="Rezzza\SecurityBundle\Security\Listener\CorsSecurityListener" public="false">
             <argument type="service" id="logger" on-invalid="null" />
             <tag name="kernel.event_listener" event="kernel.request" method="onKernelRequest" priority="200" />
         </service>
