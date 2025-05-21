@@ -43,6 +43,11 @@ class CorsSecurityListener
             return;
         }
 
+        // If Origin header was the same as the request host, we can skip CORS validation
+        if ($request->headers->get('Origin') === $request->getSchemeAndHttpHost()) {
+            return;
+        }
+
         // If the request has an Origin header and the CORS listener has not validated it, deny the request
         if (
             $request->headers->has('Origin')
