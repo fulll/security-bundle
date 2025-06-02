@@ -10,6 +10,7 @@ class SignatureValidToken extends AbstractToken
 {
     public function __construct(SignatureValidUser $user)
     {
+        parent::__construct();
         $this->setUser($user);
     }
 
