@@ -87,7 +87,7 @@ $signedRequest = new SignedRequest(
     'GET',
     'subdomain.domain.tld',
     '/path/to/resources',
-    'content',
+    rawurldecode('content'),
     $signatureTime // if needed
 );
 
