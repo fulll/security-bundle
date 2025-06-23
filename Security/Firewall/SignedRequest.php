@@ -16,7 +16,7 @@ class SignedRequest
         $this->setMethod(strtoupper($method));
     }
 
-    public function buildSignature(SignatureConfig $signatureConfig): string
+    public function buildVerificationSignature(SignatureConfig $signatureConfig): string
     {
         $payload = [
             $this->method,
@@ -38,9 +38,31 @@ class SignedRequest
         );
     }
 
+    public function buildSignature(SignatureConfig $signatureConfig): string
+    {
+        $payload = [
+            $this->method,
+            $this->host,
+            $this->pathInfo,
+            rawurldecode($this->content),
+        ];
+
+        if ($signatureConfig->isReplayProtectionEnabled()) {
+            $this->guardValidSignatureTime();
+            // use unshift to keep BC on signature generation
+            array_unshift($payload, $this->signatureTime);
+        }
+
+        return hash_hmac(
+            $signatureConfig->getAlgorithm(),
+            implode("\n", $payload),
+            $signatureConfig->getSecret(),
+        );
+    }
+
     public function authenticateSignature(string $signature, SignatureConfig $signatureConfig, ReplayProtection $replayProtection): bool
     {
-        if ($signature !== $this->buildSignature($signatureConfig)) {
+        if ($signature !== $this->buildVerificationSignature($signatureConfig)) {
             throw new InvalidSignatureException();
         }
 
