@@ -16,14 +16,23 @@ class SignedRequest
         $this->setMethod(strtoupper($method));
     }
 
-    public function buildSignature(SignatureConfig $signatureConfig): string
+    public function buildSignature(SignatureConfig $signatureConfig, bool $forVerification = false): string
     {
         $payload = [
             $this->method,
             $this->host,
             $this->pathInfo,
-            $this->content,
+            rawurldecode($this->content),
         ];
+
+        if ($forVerification) {
+            $payload = [
+                $this->method,
+                $this->host,
+                $this->pathInfo,
+                $this->content,
+            ];
+        }
 
         if ($signatureConfig->isReplayProtectionEnabled()) {
             $this->guardValidSignatureTime();
@@ -40,7 +49,7 @@ class SignedRequest
 
     public function authenticateSignature(string $signature, SignatureConfig $signatureConfig, ReplayProtection $replayProtection): bool
     {
-        if ($signature !== $this->buildSignature($signatureConfig)) {
+        if ($signature !== $this->buildSignature($signatureConfig, true)) {
             throw new InvalidSignatureException();
         }
 
