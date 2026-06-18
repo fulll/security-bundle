@@ -9,8 +9,8 @@ use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Symfony\Component\DependencyInjection\Extension\Extension;
+use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 
 /**
  * RezzzaSecurityExtension.
@@ -28,14 +28,14 @@ class RezzzaSecurityExtension extends Extension
 
         $config = $processor->processConfiguration($configuration, $configs);
 
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config/services'));
+        $loader = new PhpFileLoader($container, new FileLocator(__DIR__.'/../Resources/config/services'));
 
-        $loader->load('security.xml');
+        $loader->load('security.php');
 
         $container->setParameter('rezzza.security.request_obfuscator.enabled', $config['request_obfuscator']['enabled']);
 
         if ($container->getParameter('rezzza.security.request_obfuscator.enabled')) {
-            $loader->load('request_obfuscator.xml');
+            $loader->load('request_obfuscator.php');
         }
 
         $firewalls = $config['firewalls'];

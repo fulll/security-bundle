@@ -37,9 +37,11 @@ class RequestSignatureListener extends AbstractAuthenticator
             );
         }
 
-        $signature = $request->get($this->signatureQueryParameters->getNonceQueryParameter());
+        $nonceQueryParameter = $this->signatureQueryParameters->getNonceQueryParameter();
 
-        if (null === $signature) {
+        $signature = $request->query->getString($nonceQueryParameter);
+
+        if ('' === $signature) {
             throw new UnauthorizedHttpException('Signature must be filled.');
         }
 
