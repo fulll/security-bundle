@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Rezzza\SecurityBundle\Security\Firewall;
 
+use Rezzza\SecurityBundle\Security\Badge\AccountingFirmIdBadge;
 use Rezzza\SecurityBundle\Security\SignatureValidToken;
 use Rezzza\SecurityBundle\Security\SignatureValidUser;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,6 +27,7 @@ class RequestSignatureListener extends AbstractAuthenticator
         private bool $ignored,
         private SignatureConfig $signatureConfig,
         private ReplayProtection $replayProtection,
+        private ?AccountingFirmIdBadgeConfig $accountingFirmIdBadgeConfig = null,
     ) {
     }
 
@@ -63,9 +65,49 @@ class RequestSignatureListener extends AbstractAuthenticator
             throw new HttpException(408, $e->getMessage());
         }
 
-        return new SelfValidatingPassport(
+        return $this->buildPassport($request, $signature);
+    }
+
+    private function buildPassport(Request $request, string $signature): Passport
+    {
+        $passport = new SelfValidatingPassport(
             new UserBadge($signature, static fn () => new SignatureValidUser()),
         );
+
+        if (null !== $this->accountingFirmIdBadgeConfig) {
+            $passport->addBadge(new AccountingFirmIdBadge($this->resolveAccountingFirmId(
+                $request,
+                $this->accountingFirmIdBadgeConfig,
+            )));
+        }
+
+        return $passport;
+    }
+
+    private function resolveAccountingFirmId(Request $request, AccountingFirmIdBadgeConfig $config): int
+    {
+        $name = $config->getName();
+
+        $value = match ($config->getSource()) {
+            'header' => $request->headers->get($name),
+            'query' => $request->query->get($name),
+            'request' => $request->request->get($name),
+            'attribute' => $request->attributes->get($name),
+            default => null,
+        };
+
+        if (null === $value || '' === $value) {
+            throw new UnauthorizedHttpException('Signature', sprintf('Missing or invalid "%s" value.', $name));
+        }
+
+        if (\is_int($value)) {
+            return $value;
+        }
+        if (\is_string($value) && ctype_digit($value)) {
+            return (int) $value;
+        }
+
+        throw new UnauthorizedHttpException('Signature', sprintf('Missing or invalid "%s" value.', $name));
     }
 
     public function supports(Request $request): bool
@@ -95,7 +137,7 @@ class RequestSignatureListener extends AbstractAuthenticator
             throw new \LogicException('No SignatureValidUser configured for this UserBadge.');
         }
 
-        $token = new SignatureValidToken($user);
+        $token = new SignatureValidToken($user, $this->extractAccountingFirmId($passport));
 
         // BC layer for Authorization::isGranted() in sf5
         if (method_exists($token, 'setAuthenticated')) {
@@ -103,5 +145,16 @@ class RequestSignatureListener extends AbstractAuthenticator
         }
 
         return $token;
+    }
+
+    private function extractAccountingFirmId(Passport $passport): ?int
+    {
+        if (!$passport->hasBadge(AccountingFirmIdBadge::class)) {
+            return null;
+        }
+
+        $badge = $passport->getBadge(AccountingFirmIdBadge::class);
+
+        return $badge instanceof AccountingFirmIdBadge ? $badge->getAccountingFirmId() : null;
     }
 }

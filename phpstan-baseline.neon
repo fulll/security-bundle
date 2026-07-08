@@ -51,21 +51,6 @@ parameters:
 			path: DependencyInjection/Security/Factory/RequestSignatureFactory.php
 
 		-
-			message: "#^Method Rezzza\\\\SecurityBundle\\\\DependencyInjection\\\\Security\\\\Factory\\\\RequestSignatureFactory\\:\\:createReplayProtection\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: DependencyInjection/Security/Factory/RequestSignatureFactory.php
-
-		-
-			message: "#^Method Rezzza\\\\SecurityBundle\\\\DependencyInjection\\\\Security\\\\Factory\\\\RequestSignatureFactory\\:\\:createSignatureConfig\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: DependencyInjection/Security/Factory/RequestSignatureFactory.php
-
-		-
-			message: "#^Method Rezzza\\\\SecurityBundle\\\\DependencyInjection\\\\Security\\\\Factory\\\\RequestSignatureFactory\\:\\:createSignatureQueryParameters\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: DependencyInjection/Security/Factory/RequestSignatureFactory.php
-
-		-
 			message: "#^Method Rezzza\\\\SecurityBundle\\\\DependencyInjection\\\\Security\\\\Factory\\\\RequestSignatureFactory\\:\\:getPosition\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: DependencyInjection/Security/Factory/RequestSignatureFactory.php
