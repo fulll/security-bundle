@@ -43,6 +43,7 @@ return static function (ContainerConfigurator $container): void {
             null, // injected via RequestSignatureFactory
             null, // injected via RequestSignatureFactory
             null, // injected via RequestSignatureFactory
+            null, // injected via RequestSignatureFactory
         ]);
 
     $services->set('rezzza.security.request_signature.signature_query_parameters', '%rezzza.security.request_signature.signature_query_parameters.class%')

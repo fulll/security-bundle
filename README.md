@@ -69,15 +69,30 @@ security:
                 ignore:    %request_signature.ignore%
                 # secret of symfony application or an other one
                 secret:    %secret%
-                # http://.............?_signature=....
+                # https://.............?_signature=....
                 parameter: _signature
                 # Do you want to add a lifetime criteria ? By this way the signature will be transitory
                 replay_protection:
                     enabled:   true
                     lifetime:  600
                     parameter: _signature_ttl
+                # optional: bind extra badges to the passport/token
+                badges:
+                    # currently the only available badge
+                    accounting_firm_id:
+                        # where to look for the value: header|query|request|attribute
+                        source: header
+                        # key/name used to fetch the value
+                        name: X-Accounting-Firm-Id
+                    # shortcut for accounting_firm_id: { source: header, name: X-Accounting-Firm-Id }
+                    # accounting_firm_id: ~
 
 ```
+
+When `badges.accounting_firm_id` is configured, the value is read from the request (per
+`source`/`name`) and exposed as an `AccountingFirmIdBadge` on the `Passport`, then injected as
+`accountingFirmId` (int) into `SignatureValidToken`. If the value is missing or not numeric,
+the request is rejected (401).
 
 Build the signature:
 
